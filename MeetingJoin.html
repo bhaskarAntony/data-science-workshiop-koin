@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .hero{
+            min-height: 100vh;
+            background: #0c0c0c;
+            padding: 50px 20px;
+        }
+        .register-card{
+            grid-column-gap: 12px;
+            grid-row-gap: 12px;
+            background-color: rgba(166,239,103,.2);
+            border: 1px solid rgba(166,239,103,.2);
+            border-radius: 8px;
+            align-items: center;
+            padding: 8px 12px;
+            display: flex;
+            color: #fff;
+        }
+        header{
+            background: #1f1f1f;
+            padding: 10px;
+        }
+        .form-control{
+            background-color: rgba(128, 244, 26, 0.2);
+            border: 1px solid rgba(166,239,103,.2);
+            padding: 20px;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+        .reg-btn{
+            border: none;
+            padding: 20px;
+            color: #000;
+            background-color:#a6ef67;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a className="navbar-brand" href="#home"><img src="https://res.cloudinary.com/dfogisedz/image/upload/v1696400519/webinar/wuxjubwtp8csymfqv28t.png" alt="" width="180" /> </a>
+    </header>
+   <div class="hero container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card register-card p-3">
+                    <h1 class="fs-3">Join to Data Science WorkShop</h1>
+                    <div class="d-flex gap-3">
+                        <button class="register-card"> <i class="bi bi-calendar2-event"></i> 28th Oct 2023 </button>
+                        <button class="register-card"> <i class="bi bi-alarm"></i> 10:30 AM</button>
+                    </div>
+                    <form class="w-100" id="registration-form">
+                        <div class="form-group mt-3">
+                            <label for="name" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Your name" required id="name">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="email" class="form-label">Student Email</label>
+                        <input type="email" class="form-control" placeholder="Example@gmail.com" required id="email">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="mobile" class="form-label">Mobile Number</label>
+                        <input type="number" class="form-control" placeholder="+91 000-0000-000" required id="number">
+                        </div>
+                        <div class="form-group mt-5">
+                           <button type="submit" class="w-100 reg-btn" id="reg">Join To Workshop</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+   </div>
+   <footer class="text-center bg-dark m-0 p-3">
+        <p class="fs-6 text-white">Copyrights@2023</p>
+   </footer>
+
+   <script>
+
+    var reg = document.getElementById("reg");
+    var form = document.getElementById("registration-form");
+
+    reg.addEventListener("click", (e) => {
+        e.preventDefault();
+        var name = document.getElementById("name").value;
+        var number = document.getElementById("number").value;
+        var email = document.getElementById("email").value;
+
+        if (name.length > 2 && number.length >= 9 && email.length >= 9) {
+            reg.innerHTML = "Joining...";
+
+            // Prepare the data to send
+            var data = {
+                name: name,
+                mobile: number,
+                email: email,
+            };
+
+            // Make an HTTP POST request to the API
+            fetch("http://localhost:3200/api/attendee/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        window.location.href = "https://events.teams.microsoft.com/event/fc85208d-4b24-48af-981c-1ffe594d57d3@0c0d5780-b3f9-4f76-b884-d93481dacf82"
+                        return response.json();
+                    } else {
+                        throw new Error("Failed to register.");
+                        alert("failed to join workshop")
+                    }
+                })
+                .then((data) => {
+                    // Handle the response from the API here
+                    console.log(data); // You can replace this with your desired action
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        } else {
+            alert("Please fill in all the required fields to join the Data Science Workshop.");
+        }
+    });
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
